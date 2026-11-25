@@ -10,13 +10,16 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build-macos:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - runner: macos-15
+          - runner: macos-latest
             arch: arm64
           - runner: macos-15-intel
             arch: x86_64
@@ -55,3 +58,12 @@ jobs:
           name: Aufstieg-macOS-${{ matrix.arch }}
           path: dist/Aufstieg-macOS-*.dmg
           if-no-files-found: error
+
+      - name: Publish DMG to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view v0.1.0-macos >/dev/null 2>&1; then
+            gh release create v0.1.0-macos --title "Aufstieg | Химия (macOS)" --notes "Готовые образы macOS с вшитой базой cbyd.db." || true
+          fi
+          gh release upload v0.1.0-macos dist/Aufstieg-macOS-*.dmg --clobber
