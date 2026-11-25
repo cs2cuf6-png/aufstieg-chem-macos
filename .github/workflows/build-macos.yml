@@ -1,0 +1,57 @@
+name: Build macOS App
+
+on:
+  workflow_dispatch:
+    inputs:
+      db_url:
+        description: "Optional direct URL to cbyd.db to bundle inside Aufstieg.app"
+        required: false
+        default: ""
+  release:
+    types: [published]
+
+jobs:
+  build-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Download cbyd.db (optional)
+        env:
+          DB_URL: ${{ inputs.db_url || vars.CBYD_DB_URL || '' }}
+        run: |
+          if [[ -n "$DB_URL" ]]; then
+            echo "Downloading cbyd.db..."
+            curl -fL "$DB_URL" -o cbyd.db
+            ls -lh cbyd.db
+          else
+            echo "No DB_URL provided — building online-capable Aufstieg.app without embedded cbyd.db."
+          fi
+
+      - name: Build Aufstieg.app & DMG
+        run: |
+          chmod +x build_macos.sh start_macos.command
+          ./build_macos.sh
+
+      - name: Upload DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Aufstieg-macOS-${{ matrix.arch }}
+          path: dist/Aufstieg-macOS-*.dmg
+          if-no-files-found: error

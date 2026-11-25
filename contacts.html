@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aufstieg | Химия (@Aufchem)</title>
+
+  <!-- Моноширинный шрифт JetBrains Mono для TUI-интерфейса -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Настройка цветовой палитры, шрифтов и анимаций под TUI Aufstieg -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tui: {
+              bg: '#090A0F',
+              panel: '#0B0D12',
+              border: '#303642',
+              borderActive: '#466BB0',
+              accent: '#5B8AE6',
+              select: '#1F3F6E',
+              success: '#3FB950',
+              text: '#E6EDF3',
+              muted: '#8B949E',
+            },
+          },
+          fontFamily: {
+            mono: [
+              '"JetBrains Mono"',
+              'Consolas',
+              'ui-monospace',
+              'SFMono-Regular',
+              'monospace',
+            ],
+          },
+          keyframes: {
+            blinkCursor: {
+              '0%, 49%': { opacity: '1' },
+              '50%, 100%': { opacity: '0' },
+            },
+            starTwinkleA: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.25' },
+            },
+            starTwinkleB: {
+              '0%, 100%': { opacity: '0.35' },
+              '50%': { opacity: '1' },
+            },
+          },
+          animation: {
+            cursor: 'blinkCursor 1.05s steps(1, end) infinite',
+            twinkleA: 'starTwinkleA 2.8s ease-in-out infinite',
+            twinkleB: 'starTwinkleB 3.6s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-tui-bg text-tui-text font-mono antialiased selection:bg-tui-select selection:text-white overflow-x-hidden flex flex-col">
+
+  <!-- Основной TUI-контейнер -->
+  <main class="w-full max-w-6xl mx-auto px-3 py-4 sm:px-6 sm:py-6 flex-1 flex flex-col gap-5">
+
+    <!-- 1. ВЕРХНЯЯ СТРОКА ШАПКИ (TUI HEADER) -->
+    <header class="w-full bg-tui-panel border border-tui-borderActive rounded-md px-3.5 py-2.5 sm:px-4 flex items-center justify-between gap-2 text-xs sm:text-sm">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="text-tui-accent shrink-0" aria-hidden="true">▲</span>
+        <h1 class="text-tui-accent font-semibold truncate">
+          Aufstieg | Химия (@Aufchem)
+        </h1>
+        <!-- Мигающий синий прямоугольный терминальный курсор -->
+        <span
+          class="inline-block w-2 h-4 bg-tui-accent animate-cursor shrink-0 ml-0.5"
+          aria-hidden="true"
+        ></span>
+      </div>
+    </header>
+
+    <!-- 2. ДВУХКОЛОНОЧНАЯ АДАПТИВНАЯ СЕТКА -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+      <!-- ЛЕВАЯ ОСНОВНАЯ КОЛОНКА -->
+      <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-5">
+
+        <!-- Панель «◆ Благодарность» -->
+        <section class="relative bg-tui-panel border border-tui-border rounded-md pt-6 pb-5 px-4 sm:px-5">
+          <span class="absolute -top-2.5 left-3.5 bg-tui-bg px-2 text-xs sm:text-sm text-tui-accent font-medium select-none">
+            ◆ Благодарность
+          </span>
+          <h2 class="text-[22px] sm:text-[26px] font-bold text-white leading-snug tracking-tight mb-3">
+            Спасибо, что используете наше приложение!
+          </h2>
+          <p class="text-xs sm:text-sm text-tui-text/95 leading-relaxed">
+            Искренне благодарим вас за то, что вы выбрали наше приложение для решения химических цепочек и покорения новых вершин в химии. Желаем вам лёгких реакций, безошибочных реагентов, красивых синтезов и самых высоких результатов!
+          </p>
+        </section>
+
+        <!-- Панель «◆ Наши ресурсы» -->
+        <section class="relative bg-tui-panel border border-tui-border rounded-md pt-6 pb-3 px-3 sm:px-5">
+          <span class="absolute -top-2.5 left-3.5 bg-tui-bg px-2 text-xs sm:text-sm text-tui-accent font-medium select-none">
+            ◆ Наши ресурсы
+          </span>
+
+          <!-- Шапка таблицы -->
+          <div class="grid grid-cols-12 items-center px-2.5 pb-2 mb-1.5 border-b border-tui-border text-xs sm:text-sm text-tui-accent font-medium select-none">
+            <div class="col-span-7 sm:col-span-4 pl-4">Ресурс</div>
+            <div class="hidden sm:block sm:col-span-5">Ссылка</div>
+            <div class="col-span-5 sm:col-span-3 text-right">Действие</div>
+          </div>
+
+          <!-- Интерактивный TUI-список ресурсов -->
+          <div class="flex flex-col gap-0.5 text-xs sm:text-sm" role="list">
+
+            <!-- 1) Telegram-канал -->
+            <a
+              href="https://t.me/Aufchem"
+              target="_blank"
+              rel="noopener noreferrer"
+              role="listitem"
+              data-tui-row
+              class="group grid grid-cols-12 items-center px-2.5 py-2.5 rounded text-tui-text hover:bg-tui-select hover:text-white focus-visible:bg-tui-select focus-visible:text-white focus-visible:outline-none transition-colors duration-100"
+            >
+              <div class="col-span-7 sm:col-span-4 flex items-center gap-2 min-w-0">
+                <span class="text-tui-accent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden="true">▸</span>
+                <div class="truncate">
+                  <span class="font-medium">Telegram-канал</span>
+                  <span class="block sm:hidden text-[11px] text-tui-muted group-hover:text-white/80 truncate">t.me/Aufchem</span>
+                </div>
+              </div>
+              <div class="hidden sm:block sm:col-span-5 text-tui-muted group-hover:text-white/90 group-focus-visible:text-white/90 truncate pr-2">
+                https://t.me/Aufchem
+              </div>
+              <div class="col-span-5 sm:col-span-3 text-right text-tui-accent group-hover:text-white group-focus-visible:text-white whitespace-nowrap">
+                [открыть ↗]
+              </div>
+            </a>
+
+            <!-- 2) Группа ВКонтакте -->
+            <a
+              href="https://vk.ru/Aufchem"
+              target="_blank"
+              rel="noopener noreferrer"
+              role="listitem"
+              data-tui-row
+              class="group grid grid-cols-12 items-center px-2.5 py-2.5 rounded text-tui-text hover:bg-tui-select hover:text-white focus-visible:bg-tui-select focus-visible:text-white focus-visible:outline-none transition-colors duration-100"
+            >
+              <div class="col-span-7 sm:col-span-4 flex items-center gap-2 min-w-0">
+                <span class="text-tui-accent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden="true">▸</span>
+                <div class="truncate">
+                  <span class="font-medium">Группа ВКонтакте</span>
+                  <span class="block sm:hidden text-[11px] text-tui-muted group-hover:text-white/80 truncate">vk.ru/Aufchem</span>
+                </div>
+              </div>
+              <div class="hidden sm:block sm:col-span-5 text-tui-muted group-hover:text-white/90 group-focus-visible:text-white/90 truncate pr-2">
+                https://vk.ru/Aufchem
+              </div>
+              <div class="col-span-5 sm:col-span-3 text-right text-tui-accent group-hover:text-white group-focus-visible:text-white whitespace-nowrap">
+                [открыть ↗]
+              </div>
+            </a>
+
+            <!-- 3) Тег проекта -->
+            <button
+              type="button"
+              role="listitem"
+              data-tui-row
+              data-copy="@aufchem"
+              class="group w-full text-left grid grid-cols-12 items-center px-2.5 py-2.5 rounded text-tui-text hover:bg-tui-select hover:text-white focus-visible:bg-tui-select focus-visible:text-white focus-visible:outline-none transition-colors duration-100 cursor-pointer"
+            >
+              <div class="col-span-7 sm:col-span-4 flex items-center gap-2 min-w-0">
+                <span class="text-tui-accent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden="true">▸</span>
+                <div class="truncate">
+                  <span class="font-medium">Тег проекта</span>
+                  <span class="block sm:hidden text-[11px] text-tui-muted group-hover:text-white/80 truncate">@aufchem</span>
+                </div>
+              </div>
+              <div class="hidden sm:block sm:col-span-5 text-tui-muted group-hover:text-white/90 group-focus-visible:text-white/90 truncate pr-2">
+                @aufchem
+              </div>
+              <div class="col-span-5 sm:col-span-3 text-right whitespace-nowrap">
+                <span data-copy-badge class="text-tui-accent group-hover:text-white group-focus-visible:text-white transition-colors">
+                  [копировать]
+                </span>
+              </div>
+            </button>
+
+          </div>
+        </section>
+
+        <!-- Панель «◆ Поддержка» (лаконичное оформление) -->
+        <section class="relative bg-tui-panel border border-tui-border rounded-md pt-6 pb-3 px-3 sm:px-5">
+          <span class="absolute -top-2.5 left-3.5 bg-tui-bg px-2 text-xs sm:text-sm text-tui-accent font-medium select-none">
+            ◆ Поддержка
+          </span>
+
+          <p class="text-xs sm:text-sm text-tui-muted px-2.5 pb-2.5 mb-1.5 border-b border-tui-border">
+            Нашли неисправность — напишите нам:
+          </p>
+
+          <div class="flex flex-col gap-0.5 text-xs sm:text-sm" role="list">
+
+            <!-- 1) @Eadweardik -->
+            <div
+              role="listitem"
+              class="group flex items-center justify-between gap-2 px-2.5 py-1.5 rounded hover:bg-tui-select focus-within:bg-tui-select transition-colors duration-100"
+            >
+              <a
+                href="https://t.me/Eadweardik"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-tui-row
+                class="flex-1 min-w-0 flex items-center gap-2 py-1 text-tui-text group-hover:text-white focus-visible:text-white focus-visible:outline-none"
+              >
+                <span class="text-tui-accent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity shrink-0" aria-hidden="true">▸</span>
+                <span class="font-medium truncate">@Eadweardik</span>
+                <span class="hidden sm:inline text-tui-muted group-hover:text-white/80 text-xs">t.me/Eadweardik ↗</span>
+              </a>
+
+              <button
+                type="button"
+                data-copy="@Eadweardik"
+                aria-label="Скопировать @Eadweardik"
+                class="shrink-0 px-2 py-1 rounded text-tui-accent group-hover:text-white hover:bg-white/10 focus-visible:bg-white/15 focus-visible:outline-none transition-colors cursor-pointer"
+              >
+                <span data-copy-badge>[копировать]</span>
+              </button>
+            </div>
+
+            <!-- 2) @yasher2027 -->
+            <div
+              role="listitem"
+              class="group flex items-center justify-between gap-2 px-2.5 py-1.5 rounded hover:bg-tui-select focus-within:bg-tui-select transition-colors duration-100"
+            >
+              <a
+                href="https://t.me/yasher2027"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-tui-row
+                class="flex-1 min-w-0 flex items-center gap-2 py-1 text-tui-text group-hover:text-white focus-visible:text-white focus-visible:outline-none"
+              >
+                <span class="text-tui-accent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity shrink-0" aria-hidden="true">▸</span>
+                <span class="font-medium truncate">@yasher2027</span>
+                <span class="hidden sm:inline text-tui-muted group-hover:text-white/80 text-xs">t.me/yasher2027 ↗</span>
+              </a>
+
+              <button
+                type="button"
+                data-copy="@yasher2027"
+                aria-label="Скопировать @yasher2027"
+                class="shrink-0 px-2 py-1 rounded text-tui-accent group-hover:text-white hover:bg-white/10 focus-visible:bg-white/15 focus-visible:outline-none transition-colors cursor-pointer"
+              >
+                <span data-copy-badge>[копировать]</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ПРАВАЯ КОЛОНКА -->
+      <aside class="lg:col-span-5 xl:col-span-4 flex flex-col items-center gap-6">
+
+        <!-- Верхняя панель «◆ Aufstieg» с синей рамкой #466BB0 -->
+        <div class="w-full relative bg-tui-panel border border-tui-borderActive rounded-md pt-7 pb-6 px-4 sm:px-5 flex items-center justify-center">
+          <span class="absolute -top-2.5 left-3.5 bg-tui-bg px-2 text-xs sm:text-sm text-tui-accent font-medium select-none">
+            ◆ Aufstieg
+          </span>
+
+          <!-- Белый векторный SVG-логотип (кресло циклогексана с тремя двойными связями и флажком) -->
+          <div class="flex items-center justify-center gap-4 select-none">
+            <svg
+              class="w-20 h-[72px] shrink-0"
+              viewBox="0 0 148 136"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Логотип Aufstieg zu den Gipfeln"
+            >
+              <!-- Контур конформации «кресло» -->
+              <polygon
+                points="14,124 34,72 74,72 114,44 94,96 54,96"
+                stroke="#FFFFFF"
+                stroke-width="4.8"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <!-- Три внутренние двойные связи -->
+              <line x1="25" y1="111" x2="38.5" y2="79" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" />
+              <line x1="78.5" y1="77.5" x2="103" y2="60.5" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" />
+              <line x1="57.5" y1="88.5" x2="87.5" y2="88.5" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" />
+              <!-- Флагшток и треугольный флажок на правой вершине -->
+              <line x1="114" y1="44" x2="114" y2="9" stroke="#FFFFFF" stroke-width="4.6" stroke-linecap="round" />
+              <polygon
+                points="114,9 136,18.5 114,28"
+                stroke="#FFFFFF"
+                stroke-width="4.4"
+                stroke-linejoin="round"
+                fill="none"
+              />
+            </svg>
+
+            <div class="text-left leading-tight">
+              <div class="text-2xl font-bold tracking-tight text-white">
+                Aufstieg
+              </div>
+              <div class="text-xs sm:text-sm font-medium text-tui-accent mt-1">
+                zu den Gipfeln
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Нижняя область без рамки: идентичная пиксельная гора 30×26 на фоне #090A0F -->
+        <div class="w-full flex items-center justify-center py-2">
+          <svg
+            id="pixelMountain"
+            class="w-[260px] sm:w-[290px] h-auto block select-none"
+            style="image-rendering: pixelated;"
+            viewBox="0 0 30 26"
+            shape-rendering="crispEdges"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Пиксельная гора с синим флагом и звёздами"
+          ></svg>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- 3. НИЖНЯЯ СТРОКА СТАТУСА (TUI STATUS BAR) -->
+    <footer class="mt-auto pt-3 border-t border-tui-border/60 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-x-4 gap-y-1 min-h-[2rem]" aria-live="polite">
+      <span class="text-tui-muted select-none">↑↓ навигация &nbsp;·&nbsp; Enter выбрать</span>
+      <span id="statusText" class="text-tui-success font-medium"></span>
+    </footer>
+
+  </main>
+
+  <!-- Скрипт рендеринга 30×26 пиксельной горы, копирования тегов и клавиатурной TUI-навигации -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* =====================================================================
+       * 1. ОТРИСОВКА ИДЕНТИЧНОЙ ПИКСЕЛЬНОЙ ГОРЫ 30×26 В SVG
+       * ===================================================================== */
+      const mountainSvg = document.getElementById('pixelMountain');
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+
+      const palette = {
+        S: '#F0F4FF', // яркая звезда
+        P: '#B8A8D8', // сиреневая звезда
+        K: '#4A5573', // древко флага
+        F: '#4F8AF5', // яркий синий флаг
+        f: '#2D5DC2', // тень на флаге
+        W: '#FFFFFF', // яркий снег на левом склоне
+        L: '#C9DAF5', // светло-голубой снег
+        M: '#798EC4', // средний сине-серый
+        B: '#465394', // индиго
+        D: '#2D326B', // тёмный индиго
+        N: '#1D1E4B', // глубокая тёмно-синяя тень основания
+      };
+
+      const pixelMatrix = [
+        '..............................',
+        '....................S.........',
+        '.........S....................',
+        '..............................',
+        '...............K..............',
+        '...............KFF............',
+        '...............KFFff..........',
+        '...............Kff............',
+        '....S..........K..........P...',
+        '...............K..............',
+        '...............W..............',
+        '..............WWL.............',
+        '.............WWLMB............',
+        '.............WWLMB............',
+        '............WWLMMD............',
+        '...........WWWLMMBD...........',
+        '..........WWLLMBBDDN..........',
+        '.........WWLMLBBDDNND.........',
+        '........WWLMMBBDDNNDDN........',
+        '.......WLMBMBDDMDNNNDDN.......',
+        '......WLBDDBBDNDLMDNNBDN......',
+        '.....LLMDDBDDNNMLWMBDBMDN...B.',
+        '....LMBDNDDNBMLWLBDDMLMBDNNDBD',
+        '...MBDNNDBDNBMBDNNMLLMBDNNDBDN',
+        '..DBDNNDBMBDNDBDNDBMBDNNDBMDNN',
+        '.NDDNNDBMBDDNDBDNNBMBDDNNDBDDN',
+      ];
+
+      if (mountainSvg) {
+        const fragment = document.createDocumentFragment();
+        let starCounter = 0;
+
+        pixelMatrix.forEach(function (row, y) {
+          for (let x = 0; x < row.length; x++) {
+            const symbol = row[x];
+            const color = palette[symbol];
+            if (!color) continue;
+
+            const rect = document.createElementNS(SVG_NS, 'rect');
+            rect.setAttribute('x', String(x));
+            rect.setAttribute('y', String(y));
+            rect.setAttribute('width', '1');
+            rect.setAttribute('height', '1');
+            rect.setAttribute('fill', color);
+
+            // Мягкое мерцание для 4 звёзд с разной фазой
+            if (symbol === 'S' || symbol === 'P') {
+              rect.setAttribute(
+                'class',
+                starCounter % 2 === 0 ? 'animate-twinkleA' : 'animate-twinkleB'
+              );
+              starCounter++;
+            }
+
+            fragment.appendChild(rect);
+          }
+        });
+
+        mountainSvg.appendChild(fragment);
+      }
+
+      /* =====================================================================
+       * 2. КОПИРОВАНИЕ ТЕГОВ В БУФЕР ОБМЕНА И ОБНОВЛЕНИЕ СТАТУС-БАРА
+       * ===================================================================== */
+      const statusTextEl = document.getElementById('statusText');
+      let statusResetTimer = null;
+
+      /**
+       * Копирует переданную строку в буфер обмена через execCommand('copy').
+       * @param {string} text - Текст для копирования
+       * @returns {boolean} - Результат операции
+       */
+      function copyToClipboard(text) {
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.top = '-9999px';
+          textarea.style.left = '-9999px';
+          document.body.appendChild(textarea);
+
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+          const success = document.execCommand('copy');
+          document.body.removeChild(textarea);
+          return success;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      /**
+       * Переключает бейдж на «✓ скопировано» и обновляет нижнюю строку статуса на 2 секунды.
+       * @param {HTMLElement} trigger - Элемент-инициатор копирования
+       * @param {string} tag - Скопированный тег
+       */
+      function showCopiedFeedback(trigger, tag) {
+        const badge = trigger.querySelector('[data-copy-badge]');
+        if (badge) {
+          if (!badge.dataset.originalLabel) {
+            badge.dataset.originalLabel = badge.textContent.trim();
+          }
+
+          badge.textContent = '✓ скопировано';
+          badge.classList.remove('text-tui-accent', 'group-hover:text-white', 'group-focus-visible:text-white');
+          badge.classList.add('text-tui-success', 'font-semibold');
+
+          clearTimeout(badge._resetTimer);
+          badge._resetTimer = setTimeout(function () {
+            badge.textContent = badge.dataset.originalLabel || '[копировать]';
+            badge.classList.remove('text-tui-success', 'font-semibold');
+            badge.classList.add('text-tui-accent', 'group-hover:text-white', 'group-focus-visible:text-white');
+          }, 2000);
+        }
+
+        if (statusTextEl) {
+          statusTextEl.textContent = '✓ ' + tag + ' скопирован в буфер обмена';
+          clearTimeout(statusResetTimer);
+          statusResetTimer = setTimeout(function () {
+            statusTextEl.textContent = '';
+          }, 2000);
+        }
+      }
+
+      document.querySelectorAll('[data-copy]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const textToCopy = btn.getAttribute('data-copy');
+          if (!textToCopy) return;
+
+          if (copyToClipboard(textToCopy)) {
+            showCopiedFeedback(btn, textToCopy);
+          } else if (statusTextEl) {
+            statusTextEl.textContent = '× ошибка копирования';
+          }
+        });
+      });
+
+      /* =====================================================================
+       * 3. КЛАВИАТУРНАЯ НАВИГАЦИЯ ПО TUI-СТРОКАМ (↑ / ↓ / Enter)
+       * ===================================================================== */
+      const tuiRows = Array.from(document.querySelectorAll('[data-tui-row]'));
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+
+        event.preventDefault();
+        const activeIndex = tuiRows.indexOf(document.activeElement);
+
+        let nextIndex;
+        if (activeIndex === -1) {
+          nextIndex = event.key === 'ArrowDown' ? 0 : tuiRows.length - 1;
+        } else {
+          nextIndex =
+            event.key === 'ArrowDown'
+              ? (activeIndex + 1) % tuiRows.length
+              : (activeIndex - 1 + tuiRows.length) % tuiRows.length;
+        }
+
+        tuiRows[nextIndex].focus();
+      });
+    })();
+  </script>
+</body>
+</html>
