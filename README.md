@@ -14,15 +14,10 @@
 ### Windows — готовый `cbyd.exe`
 Скачайте `cbyd.exe` из раздела **Releases** и запустите двойным кликом. База `cbyd.db` и `contacts.html` уже вшиты внутрь.
 
-### macOS — готовый `Aufstieg.app` (`.dmg`)
-1. Скачайте `Aufstieg-macOS-arm64.dmg` (Apple Silicon M1–M4) или `Aufstieg-macOS-x86_64.dmg` (Intel) из **Releases** / **Actions** и перетащите `Aufstieg.app` в папку **Программы (Applications)**.
-2. При первом запуске (если macOS предупреждает о неподписанном разработчике) выполните в Терминале:
-   ```bash
-   xattr -cr /Applications/Aufstieg.app
-   ```
-   либо откройте через правый клик → **Открыть**.
-3. Готовые флешкарты и PDF сохраняются в `~/Documents/Aufstieg/flashcards`. Для экспорта в PDF (`Ctrl+P`) нужен установленный Chrome, Edge, Brave, Arc или Chromium.
-4. Если `Aufstieg.app` собран без встроенной `cbyd.db`, базу можно положить в `~/Documents/Aufstieg/cbyd.db` (либо приложение будет скачивать синтезы онлайн).
+### macOS — готовый установщик `.pkg`
+1. Скачайте `Aufstieg-macOS-Installer-x86_64.pkg` из **Releases** и запустите его (при первом запуске неподписанного установщика: правый клик → **Открыть**).
+2. Пройдите стандартный мастер установки — `Aufstieg.app` автоматически установится в **Программы (Applications)**, снимет карантин `xattr` и при необходимости подтянет Rosetta 2 на Apple Silicon (M1–M4).
+3. После установки приложение запускается обычным двойным кликом из **Программ / Launchpad**. Готовые флешкарты и PDF сохраняются в `~/Documents/Aufstieg/flashcards`. Для экспорта в PDF (`Ctrl+P`) нужен установленный Chrome, Edge, Brave, Arc или Chromium.
 
 ### Из исходников (Windows и macOS)
 Требуется Python 3.11+ и `uv`:
