@@ -19,8 +19,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: macos-latest
-            arch: arm64
           - runner: macos-15-intel
             arch: x86_64
 
@@ -47,23 +45,25 @@ jobs:
             echo "No DB_URL provided — building online-capable Aufstieg.app without embedded cbyd.db."
           fi
 
-      - name: Build Aufstieg.app & DMG
+      - name: Build Aufstieg.app, DMG & PKG Installer
         run: |
           chmod +x build_macos.sh start_macos.command
           ./build_macos.sh
 
-      - name: Upload DMG artifact
+      - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Aufstieg-macOS-${{ matrix.arch }}
-          path: dist/Aufstieg-macOS-*.dmg
+          path: |
+            dist/Aufstieg-macOS-*.pkg
+            dist/Aufstieg-macOS-*.dmg
           if-no-files-found: error
 
-      - name: Publish DMG to GitHub Release
+      - name: Publish PKG & DMG to GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if ! gh release view v0.1.0-macos >/dev/null 2>&1; then
-            gh release create v0.1.0-macos --title "Aufstieg | Химия (macOS)" --notes "Готовые образы macOS с вшитой базой cbyd.db." || true
+            gh release create v0.1.0-macos --title "Aufstieg | Химия (macOS)" --notes "Готовый установщик (.pkg) и образ (.dmg) для macOS с вшитой базой cbyd.db." || true
           fi
-          gh release upload v0.1.0-macos dist/Aufstieg-macOS-*.dmg --clobber
+          gh release upload v0.1.0-macos dist/Aufstieg-macOS-*.pkg dist/Aufstieg-macOS-*.dmg --clobber
